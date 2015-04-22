@@ -12,7 +12,7 @@ Get external json resource from http://taotao.byethost12.com/test.json
 Use Jackson to marshalling the json to java object
 Use simple Spring security. (user:password)
 Test with Junit. 
-Integrate with Camel.
+Integrate with Camel 2.5.
 
 Host on AWS: 
 http://default-environment-mykzz9ekcx.elasticbeanstalk.com/
