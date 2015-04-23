@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,8 @@ import bean.*;
 @RestController
 public class ServiceController {
 
-    private static final String template = "Hello, %s!";
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
+    //private static final String template = "Hello, %s!";
     private static final String externalURL = "http://taotao.byethost12.com/test.json";
     
     @RequestMapping(value = "/city", method = RequestMethod.GET)
@@ -30,9 +32,12 @@ public class ServiceController {
 		return "HELLO REST API";
 	}
     
-	@RequestMapping(value = "/city/{cityName}", method = RequestMethod.GET)
-	public String displayATMList(@PathVariable String cityName, ModelMap model) {
+	//@RequestMapping(value = "/city/{cityName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/city", params={"name"}, method = RequestMethod.GET)
+	//public String displayATMList(@PathVariable String cityName) {
+	public String displayATMList(@RequestParam(value = "name") String name) {
 		
+		log.info("start the rest service");
 		// get resource
 		RestTemplate restTemplate = new RestTemplate();
 	    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
@@ -57,8 +62,8 @@ public class ServiceController {
 	    	}
 	    }
 	    
-	    if (map.containsKey(cityName)) {	    	
-	    	return StringUtils.join(map.get(cityName), "<br/>");
+	    if (map.containsKey(name)) {	    	
+	    	return StringUtils.join(map.get(name), "<br/>");
 	    } else {
 	    	return "City Not Found";
 	    }
